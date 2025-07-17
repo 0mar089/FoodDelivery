@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/controllers/auth_controller.dart';
 import 'package:food_delivery/screens/forgot_password_screen.dart';
 import 'package:food_delivery/screens/home_screen.dart';
 import 'package:food_delivery/screens/signup_screen.dart';
+import 'package:get/get.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -11,6 +13,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final AuthController authController = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,6 +54,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 labelText: 'Enter your email address',
                 border: OutlineInputBorder(),
               ),
+              onChanged: (value) {
+                authController.email.value = value;
+              },
             ),
           ),
           Padding(
@@ -59,6 +66,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 labelText: 'Enter your password',
                 border: OutlineInputBorder(),
               ),
+              onChanged: (value) {
+              authController.password.value = value;
+            },
             ),
           ),
           GestureDetector(
@@ -90,13 +100,8 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 Expanded(
                   child: FloatingActionButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const HomeScreen(),
-                        ),
-                      );
+                    onPressed: () async {
+                      await authController.login();
                     },
                     backgroundColor: const Color.fromARGB(255, 255, 119, 0),
                     shape: RoundedRectangleBorder(
